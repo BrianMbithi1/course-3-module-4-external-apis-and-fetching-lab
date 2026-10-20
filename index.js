@@ -1,4 +1,3 @@
-// index.js
 const weatherApi = "https://api.weather.gov/alerts/active?area="
 
 const input = document.getElementById('state-input');
@@ -8,8 +7,7 @@ const errorDiv = document.getElementById('error-message');
 const loading = document.getElementById('loading');
 
 function displayAlerts(data) {
-  display.innerHTML = ''; // Step 3: remove old data
-
+  display.innerHTML = ''; 
   const summary = document.createElement('p');
   summary.textContent = `${data.title}: ${data.features.length}`;
   display.appendChild(summary);
@@ -25,16 +23,16 @@ function displayAlerts(data) {
 
 function showError(message) {
   errorDiv.textContent = message;
-  errorDiv.hidden = false;
+  errorDiv.classList.remove('hidden'); 
 }
 
 function clearError() {
   errorDiv.textContent = '';
-  errorDiv.hidden = true;
+  errorDiv.classList.add('hidden'); 
 }
 
 async function fetchWeatherAlerts(state) {
-  loading.hidden = false;
+  loading.classList.remove('hidden'); 
   try {
     const response = await fetch(
       `https://api.weather.gov/alerts/active?area=${state}`
@@ -43,20 +41,20 @@ async function fetchWeatherAlerts(state) {
 
     const data = await response.json();
     console.log(data);
-    clearError();           // Step 4: hide error on success
+    clearError();           
     displayAlerts(data);
   } catch (error) {
     console.log(error.message);
     display.innerHTML = '';
     showError(error.message);
   } finally {
-    loading.hidden = true;
+    loading.classList.add('hidden'); 
   }
 }
 
 button.addEventListener('click', () => {
   const state = input.value.trim().toUpperCase();
-  input.value = ''; // Step 3: clear input
+  input.value = ''; 
 
   if (!/^[A-Z]{2}$/.test(state)) {
     showError('Please enter a two-letter state code, like MN.');
@@ -64,3 +62,4 @@ button.addEventListener('click', () => {
   }
   fetchWeatherAlerts(state);
 });
+
